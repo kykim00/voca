@@ -111,7 +111,7 @@ function QuizSessionView(state: State, onClick: (selected: string) => void) {
             {state.quizResults
               .filter((result) => !result.isCorrect)
               .map((quiz) => (
-                <span>{state.quizList[quiz.quizIndex].text} </span>
+                <span key={quiz.quizIndex}>{state.quizList[quiz.quizIndex].text} </span>
               ))}
           </div>
           <Link to='/'>홈으로</Link>
