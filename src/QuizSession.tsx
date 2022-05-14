@@ -99,9 +99,26 @@ function QuizSessionView(state: State, onClick: (selected: string) => void) {
   return (
     <section>
       <div>완료 여부: {state.isCompleted ? '완료' : '미완료'}</div>
-      <div>맞은 개수 {state.correctCount}</div>
-      <div>틀린 개수 {state.inCorrectCount}</div>
-      {state.isCompleted ? <Link to='/'>홈으로</Link> : QuizView(currentQuiz)}
+      <div>
+        {state.quizResults.length} / {state.quizList.length}
+      </div>
+      {state.isCompleted ? (
+        <>
+          <div>맞은 개수 {state.correctCount}</div>
+          <div>틀린 개수 {state.inCorrectCount}</div>
+          <div>
+            <p>틀린 문제</p>
+            {state.quizResults
+              .filter((result) => !result.isCorrect)
+              .map((quiz) => (
+                <span>{state.quizList[quiz.quizIndex].text} </span>
+              ))}
+          </div>
+          <Link to='/'>홈으로</Link>
+        </>
+      ) : (
+        QuizView(currentQuiz)
+      )}
     </section>
   )
 }
