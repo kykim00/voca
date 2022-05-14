@@ -142,27 +142,40 @@ function QuizSession() {
     // 해당 단어의 뜻 하나와 다른 단어의 뜻 둘을 포함하여
     // 3지 선다형 뜻 찾기 문제 보기로 변환한다.
     // 아래 데이터는 예시 데이터이므로 삭제.
-    return {
+    const getRandomNumber = (index: number, max: number) => {
+      while (true) {
+        const randNumA = Math.floor(Math.random() * max)
+        const randNumB = Math.floor(Math.random() * max)
+
+        if (randNumA !== randNumB && randNumA !== index && randNumB !== index) {
+          return [randNumA, randNumB]
+        }
+      }
+    }
+
+    const initialState: State = {
       isCompleted: false,
       correctCount: 0,
       inCorrectCount: 0,
       currentIndex: 0,
-      quizList: [
-        {
-          index: 0,
-          text: 'apple',
-          answer: 'n. 사과',
-          selections: ['n. 사과', 'n. 밀가루 반죽']
-        },
-        {
-          index: 1,
-          text: 'brick',
-          answer: 'n. 벽돌',
-          selections: ['n. 벽돌', 'v. 뛰다, 급증하다']
+      quizList: initialData.map((quiz, idx) => {
+        const [randNumA, randNumB] = getRandomNumber(idx, initialData.length)
+        return {
+          index: idx,
+          text: quiz.text,
+          answer: quiz.meaning,
+          selections: [
+            quiz.meaning,
+            initialData[randNumA].meaning,
+            initialData[randNumB].meaning
+          ].sort(() => Math.random() - 0.5)
         }
-      ],
+      }),
       quizResults: []
     }
+
+    setState(initialState)
+    return initialState
   }
 
   useEffect(() => {
